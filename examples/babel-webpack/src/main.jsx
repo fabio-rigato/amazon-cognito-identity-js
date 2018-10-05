@@ -101,24 +101,24 @@ class LoginForm extends React.Component {
   }
 
   /**
-   *  Handlers to User authentication
+   *  Handlers
    */
   static handleOnSuccess(session, userConfirmationNecessary) {
-    console.log('*********************** LoggedIN ************************');
+    console.log('*********************** LoginForm LoggedIN ************************');
     console.log('session: ', session);
     console.log('userConfirmationNecessary: ', userConfirmationNecessary);
-    console.log('*********************************************************');
+    console.log('********************************************************************');
   }
   static handleOnFailure(error) {
-    console.log('*********** error **********');
+    console.log('*********** LoginForm error **********');
     console.log('error: ', error);
-    console.log('****************************');
+    console.log('**************************************');
   }
   static handleNewPasswordRequired(userAttributes, requiredAttributes) {
-    console.log('*********** newPasswordRequired **********');
+    console.log('*********** LoginForm newPasswordRequired **********');
     console.log('userAttributes: ', userAttributes);
     console.log('requiredAttributes: ', requiredAttributes);
-    console.log('******************************************');
+    console.log('****************************************************');
   }
 
   /**
@@ -157,6 +157,72 @@ class LoginForm extends React.Component {
                value={this.state.password}
                placeholder="Password"
                onChange={this.handlePasswordChange.bind(this)}/>
+        <input type="submit"/>
+      </form>
+    );
+  }
+}
+
+/**
+ * Change Password Class
+ */
+
+class NewPasswordForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      newPassword: ''
+    };
+  }
+
+  handleNewPasswordChange(e) {
+    this.setState({newPassword: e.target.value});
+  }
+
+  /**
+   *  Handlers
+   */
+  static handleOnSuccess(session) {
+    console.log('*********************** NewPasswordForm LoggedIN ************************');
+    console.log('session: ', session);
+    const accessToken = session.getAccessToken().getJwtToken();
+
+    /* Use the idToken for Logins Map when Federating User Pools with identity pools or when passing through an Authorization Header to an API Gateway Authorizer*/
+    const idToken = session.idToken.jwtToken;
+
+    console.log('accessToken: ', accessToken);
+    console.log('idToken: ', idToken);
+    console.log('*************************************************************************');
+  }
+  static handleOnFailure(error) {
+    console.log('*********** NewPasswordForm error **********');
+    console.log('error: ', error);
+    window.alert(error.message);
+    console.log('********************************************');
+  }
+
+  /**
+   * Signing Method
+   * @param e
+   */
+  handleChangePassword(e) {
+    e.preventDefault();
+    const newPassword = this.state.newPassword.trim();
+    const requiredAttributeData = [];
+
+    cognitoUser.completeNewPasswordChallenge(newPassword, requiredAttributeData, {
+        onSuccess: NewPasswordForm.handleOnSuccess,
+        onFailure: NewPasswordForm.handleOnFailure
+    });
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleChangePassword.bind(this)}>
+        <input type="password"
+               value={this.state.newPassword}
+               placeholder="New Password"
+               onChange={this.handleNewPasswordChange.bind(this)}/>
         <input type="submit"/>
       </form>
     );
@@ -222,5 +288,6 @@ class ChangePasswordForm extends React.Component {
 
 ReactDOM.render(<SignUpForm />, document.getElementById('app'));
 ReactDOM.render(<LoginForm />, document.getElementById('login'));
+ReactDOM.render(<NewPasswordForm />, document.getElementById('new-password'));
 ReactDOM.render(<ChangePasswordForm />, document.getElementById('change-password'));
 
