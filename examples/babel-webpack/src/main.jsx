@@ -26,6 +26,7 @@ class SignUpForm extends React.Component {
     };
   }
 
+
   handleEmailChange(e) {
     this.setState({email: e.target.value});
   }
