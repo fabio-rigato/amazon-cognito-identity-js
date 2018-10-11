@@ -109,11 +109,13 @@ class LoginForm extends React.Component {
     console.log('userConfirmationNecessary: ', userConfirmationNecessary);
     console.log('********************************************************************');
   }
+
   static handleOnFailure(error) {
     console.log('*********** LoginForm error **********');
     console.log('error: ', error);
     console.log('**************************************');
   }
+
   static handleNewPasswordRequired(userAttributes, requiredAttributes) {
     console.log('*********** LoginForm newPasswordRequired **********');
     console.log('userAttributes: ', userAttributes);
@@ -164,7 +166,7 @@ class LoginForm extends React.Component {
 }
 
 /**
- * Change Password Class
+ * New Password Class
  */
 
 class NewPasswordForm extends React.Component {
@@ -194,6 +196,7 @@ class NewPasswordForm extends React.Component {
     console.log('idToken: ', idToken);
     console.log('*************************************************************************');
   }
+
   static handleOnFailure(error) {
     console.log('*********** NewPasswordForm error **********');
     console.log('error: ', error);
@@ -211,8 +214,8 @@ class NewPasswordForm extends React.Component {
     const requiredAttributeData = [];
 
     cognitoUser.completeNewPasswordChallenge(newPassword, requiredAttributeData, {
-        onSuccess: NewPasswordForm.handleOnSuccess,
-        onFailure: NewPasswordForm.handleOnFailure
+      onSuccess: NewPasswordForm.handleOnSuccess,
+      onFailure: NewPasswordForm.handleOnFailure
     });
   }
 
@@ -286,8 +289,8 @@ class ChangePasswordForm extends React.Component {
   }
 }
 
-ReactDOM.render(<SignUpForm />, document.getElementById('app'));
-ReactDOM.render(<LoginForm />, document.getElementById('login'));
-ReactDOM.render(<NewPasswordForm />, document.getElementById('new-password'));
+// ReactDOM.render(<SignUpForm/>, document.getElementById('app'));
+ReactDOM.render(<LoginForm/>, document.getElementById('login'));
+ReactDOM.render(<NewPasswordForm/>, document.getElementById('new-password'));
 ReactDOM.render(<ChangePasswordForm />, document.getElementById('change-password'));
 
